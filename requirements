@@ -1,6 +1,7 @@
 # the requirements file tells Streamlit
 # what python libraries to load during startup
-snowflake-connector-python[pandas]
+
+snowflake-connector-python
 
 cffi==1.15.0
 
