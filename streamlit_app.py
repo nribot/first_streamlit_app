@@ -1,4 +1,11 @@
 import streamlit
+import pandas
+import snowflake.connector
+import requests # lets us display the fruityvice api response
+from urllib.error import URLError # error message handling
+
+
+
 # display text
 streamlit.title('My Parents New Healthy Diner')
 streamlit.header('Breakfast Menu')
@@ -12,7 +19,6 @@ streamlit.header('🍌🥭 Build Your Own Fruit Smoothie 🥝🍇')
 # DISPLAY FRUIT TABLE PICKER
 
 # import fruit table data
-import pandas
 my_fruit_list = pandas.read_csv("https://uni-lab-files.s3.us-west-2.amazonaws.com/dabw/fruit_macros.txt")
 
 # set index by fruit name
@@ -29,9 +35,6 @@ streamlit.dataframe(fruits_to_show)
 
 
 # DISPLAY FRUITYVICE API RESPONSE
-
-# we import a python package that lets us display the fruityvice api response
-import requests
 
 streamlit.header("Fruityvice Fruit Advice!")
 
@@ -51,7 +54,12 @@ fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
 # displays the table to the screen
 streamlit.dataframe(fruityvice_normalized)
 
-import snowflake.connector
+
+
+# stop running while we troubleshoot
+streamlit.stop()
+
+
 my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
 my_cur = my_cnx.cursor()
 my_cur.execute("SELECT * FROM FRUIT_LOAD_LIST")
